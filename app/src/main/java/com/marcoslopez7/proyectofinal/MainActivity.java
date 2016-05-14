@@ -2,6 +2,7 @@ package com.marcoslopez7.proyectofinal;
 
 import android.app.DownloadManager;
 import android.app.VoiceInteractor;
+import android.content.Intent;
 import android.os.AsyncTask;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -49,6 +50,13 @@ public class MainActivity extends AppCompatActivity {
                 login();
             }
         });
+        createButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getApplicationContext(), CreateUserActivity.class);
+                startActivity(intent);
+            }
+        });
     }
 
 
@@ -62,7 +70,7 @@ public class MainActivity extends AppCompatActivity {
         client.newCall(request).enqueue(new Callback() {
             @Override
             public void onFailure(Call call, IOException e) {
-                Toast.makeText(getApplicationContext(), "Esto no jalo", Toast.LENGTH_SHORT).show();
+                e.printStackTrace();
             }
 
             @Override
