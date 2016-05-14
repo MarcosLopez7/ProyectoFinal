@@ -61,7 +61,9 @@ public class MainActivity extends AppCompatActivity {
 
 
     private void login() {
-        client = new OkHttpClient();
+        Intent intent = new Intent(getApplicationContext(), CreateProduct.class);
+        startActivity(intent);
+        /*client = new OkHttpClient();
         RequestBody body = new FormBody.Builder().add("email", emailField.getText().toString()).
                 add("password", passwordField.getText().toString()).build();
 
@@ -78,7 +80,7 @@ public class MainActivity extends AppCompatActivity {
                 Log.d(TAG, response.body().string());
 
             }
-        });
+        });*/
 
         /*try {
 

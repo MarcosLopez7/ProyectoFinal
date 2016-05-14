@@ -130,4 +130,13 @@
         android:layout_marginLeft="12dp"
         android:layout_marginTop="24dp"
         ></Spinner>
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Submit"
+        android:id="@+id/b_submit"
+        android:layout_below="@+id/s_category"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="57dp" />
 </RelativeLayout>
