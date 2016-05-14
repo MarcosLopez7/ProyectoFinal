@@ -24,8 +24,8 @@
         <activity android:name=".ResultsActivity" />
         <activity android:name=".ViewProfileActivity" />
         <activity android:name=".ViewProduct" />
-        <activity android:name=".CreateProduct"></activity>
-
+        <activity android:name=".CreateProduct" />
+        <activity android:name=".CreateCategory"></activity>
     </application>
 
 </manifest>
