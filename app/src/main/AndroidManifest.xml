@@ -21,7 +21,9 @@
         <activity android:name=".CreateUserActivity" />
         <activity android:name=".HomeActivity" />
         <activity android:name=".ResultsActivity" />
-        <activity android:name=".ViewProfileActivity"></activity>
+        <activity android:name=".ViewProfileActivity" />
+        <activity android:name=".ViewProduct" />
+        <activity android:name=".CreateProduct"></activity>
     </application>
 
 </manifest>
