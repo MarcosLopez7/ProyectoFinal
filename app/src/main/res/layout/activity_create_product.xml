@@ -104,7 +104,8 @@
         android:layout_alignBottom="@+id/b_picture"
         android:layout_toRightOf="@+id/b_picture"
         android:layout_toEndOf="@+id/b_picture"
-        android:layout_marginLeft="12dp"/>
+        android:layout_marginLeft="12dp"
+        android:layout_marginBottom="12dp"/>
 
     <TextView
         android:layout_width="wrap_content"
@@ -112,8 +113,21 @@
         android:textAppearance="?android:attr/textAppearanceSmall"
         android:text="Category"
         android:id="@+id/tv_category"
-        android:layout_below="@+id/b_picture"
+        android:layout_alignTop="@+id/s_category"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
-        android:layout_marginTop="24dp"/>
+        android:layout_marginTop="22dp" />
+    <Spinner
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/s_category"
+        android:spinnerMode="dropdown"
+        android:layout_below="@+id/b_picture"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true"
+        android:layout_toEndOf="@+id/tv_category"
+        android:layout_toRightOf="@+id/tv_category"
+        android:layout_marginLeft="12dp"
+        android:layout_marginTop="24dp"
+        ></Spinner>
 </RelativeLayout>
