@@ -61,7 +61,7 @@ public class MainActivity extends AppCompatActivity {
 
 
     private void login() {
-        Intent intent = new Intent(getApplicationContext(), CreateCategory.class);
+        Intent intent = new Intent(getApplicationContext(), CreatePurchase.class);
         startActivity(intent);
         /*client = new OkHttpClient();
         RequestBody body = new FormBody.Builder().add("email", emailField.getText().toString()).
