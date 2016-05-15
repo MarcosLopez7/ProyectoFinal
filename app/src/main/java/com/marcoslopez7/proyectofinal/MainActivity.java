@@ -61,11 +61,11 @@ public class MainActivity extends AppCompatActivity {
 
 
     private void login() {
-        Intent intent = new Intent(getApplicationContext(), CreatePurchase.class);
-        startActivity(intent);
-        /*client = new OkHttpClient();
+        //Intent intent = new Intent(getApplicationContext(), CreatePurchase.class);
+        //startActivity(intent);
+        client = new OkHttpClient();
         RequestBody body = new FormBody.Builder().add("email", emailField.getText().toString()).
-                add("password", passwordField.getText().toString()).build();
+                add("contrasena", passwordField.getText().toString()).build();
 
         Request request = new Request.Builder().url(url).post(body).build();
 
@@ -77,10 +77,31 @@ public class MainActivity extends AppCompatActivity {
 
             @Override
             public void onResponse(Call call, Response response) throws IOException {
-                Log.d(TAG, response.body().string());
+                String jsondata = response.body().string();
+                if (response.isSuccessful()) {
+                    if (jsondata != "invalid")
+                        runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                Intent intent = new Intent(getApplicationContext(), HomeActivity.class);
+                                startActivity(intent);
+                            }
+                        });
+
+                } else {
+                    runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            Toast.makeText(getApplicationContext(), "User o password invalids",
+                                    Toast.LENGTH_LONG).show();
+                        }
+                    });
+
+                }
+                /**/
 
             }
-        });*/
+        });
 
         /*try {
 
