@@ -50,6 +50,15 @@
             android:layout_row="2"
             android:layout_column="0" />
 
+        <Spinner
+            android:layout_width="140dp"
+            android:layout_height="75dp"
+            android:id="@+id/s_category"
+            android:spinnerMode="dropdown"
+            android:layout_row="2"
+            android:layout_column="2"
+            ></Spinner>
+
         <Button
             android:layout_width="140dp"
             android:layout_height="75dp"
@@ -64,7 +73,25 @@
             android:text="View Profile"
             android:id="@+id/b_profile"
             android:layout_row="3"
-            android:layout_column="2" />
+            android:layout_column="2" />+
+        <Button
+            android:layout_width="140dp"
+            android:layout_height="75dp"
+            android:text="New Category"
+            android:id="@+id/b_category"
+            android:layout_column="0"
+            android:layout_row="4"
+            android:visibility="invisible"
+            android:clickable="false"/>
+        <Button
+            android:layout_width="140dp"
+            android:layout_height="75dp"
+            android:text="Validate"
+            android:id="@+id/b_validate"
+            android:layout_column="2"
+            android:layout_row="4"
+            android:visibility="invisible"
+            android:clickable="false"/>
     </GridLayout>
 
 </RelativeLayout>

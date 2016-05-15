@@ -70,9 +70,12 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:id="@+id/iv_photo_content" />
-
-
-
+            <Button
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/b_purchase"
+                android:text="Purchase"
+                android:layout_gravity="center_horizontal"/>
 
 
         </LinearLayout>

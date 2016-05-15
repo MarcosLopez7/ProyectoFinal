@@ -12,6 +12,9 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.io.IOException;
 
 import okhttp3.Call;
@@ -79,7 +82,13 @@ public class MainActivity extends AppCompatActivity {
             public void onResponse(Call call, Response response) throws IOException {
                 String jsondata = response.body().string();
                 if (response.isSuccessful()) {
-                    if (jsondata != "invalid")
+                    if (jsondata != "invalid") {
+                        try {
+                            Logged(jsondata);
+                        }
+                        catch (Exception e){
+                            e.printStackTrace();
+                        }
                         runOnUiThread(new Runnable() {
                             @Override
                             public void run() {
@@ -87,6 +96,7 @@ public class MainActivity extends AppCompatActivity {
                                 startActivity(intent);
                             }
                         });
+                    }
 
                 } else {
                     runOnUiThread(new Runnable() {
@@ -113,6 +123,14 @@ public class MainActivity extends AppCompatActivity {
         } catch (IOException e) {
             e.printStackTrace();
         }*/
+    }
+
+    private void Logged(String jsond) throws JSONException{
+        JSONObject user = new JSONObject(jsond);
+        SessionHelper.logged_in = true;
+        SessionHelper.id_user = user.getInt("pk");
+        SessionHelper.admin_user = user.getBoolean("administrador");
+        Log.d(TAG, "session id: " + SessionHelper.id_user);
     }
 
 }

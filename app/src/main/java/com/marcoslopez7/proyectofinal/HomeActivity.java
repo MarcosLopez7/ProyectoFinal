@@ -1,13 +1,109 @@
 package com.marcoslopez7.proyectofinal;
 
+import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
+import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.Spinner;
 
 public class HomeActivity extends AppCompatActivity {
+
+    private Button b_buscar_categoria, b_buscar, b_validar, b_crear_categoria, b_vender, b_perfil;
+    private EditText et_buscar;
+    private static final String TAG = HomeActivity.class.getSimpleName();
+    Spinner s_categoria;
+    String[] items = new String[]{"Electronicos","Comida","Ropa"};
+    Intent intent;
+    String Resp;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
+        init();
+        Log.d(TAG,"Session id: " + SessionHelper.id_user);
+        ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, R.layout.support_simple_spinner_dropdown_item, items);
+        s_categoria.setAdapter(adapter);
+        s_categoria.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> arg0, View arg1, int arg2, long arg3) {
+                Resp = arg0.getItemAtPosition(arg2).toString();
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> arg0) {
+                // TODO Auto-generated method stub
+                Resp = arg0.getItemAtPosition(0).toString();
+            }
+
+        });
+        if(SessionHelper.admin_user){
+            b_crear_categoria.setVisibility(View.VISIBLE);
+            b_validar.setVisibility(View.VISIBLE);
+            b_crear_categoria.setClickable(true);
+            b_crear_categoria.setClickable(true);
+        }
+        b_buscar_categoria.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                intent = new Intent(getApplicationContext(), ResultsActivity.class);
+                intent.putExtra(getResources().getString(R.string.Valor_tipo_busqueda), getResources().getString(R.string.Busqueda_categoria));
+                intent.putExtra(getResources().getString(R.string.Valor_busqueda), Resp);
+                startActivity(intent);
+            }
+        });
+        b_buscar.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                intent = new Intent(getApplicationContext(), ResultsActivity.class);
+                intent.putExtra(getResources().getString(R.string.Valor_tipo_busqueda), getResources().getString(R.string.Busqueda_palabra));
+                intent.putExtra(getResources().getString(R.string.Valor_busqueda), et_buscar.getText());
+                startActivity(intent);
+            }
+        });
+        b_crear_categoria.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                intent = new Intent(getApplicationContext(), CreateCategory.class);
+                startActivity(intent);
+            }
+        });
+        b_validar.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                intent = new Intent(getApplicationContext(), ValidateActivity.class);
+                startActivity(intent);
+            }
+        });
+        b_perfil.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                intent = new Intent(getApplicationContext(), ViewProfileActivity.class);
+                startActivity(intent);
+            }
+        });
+        b_vender.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                intent = new Intent(getApplicationContext(), CreateProduct.class);
+                startActivity(intent);
+            }
+        });
+    }
+
+    void init(){
+        b_buscar = (Button) findViewById(R.id.b_search);
+        b_buscar_categoria = (Button)findViewById(R.id.b_search_2);
+        b_crear_categoria = (Button)findViewById(R.id.b_category);
+        b_perfil = (Button)findViewById(R.id.b_profile);
+        b_validar = (Button)findViewById(R.id.b_validate);
+        b_vender = (Button)findViewById(R.id.b_sell);
+        s_categoria = (Spinner)findViewById(R.id.s_category);
+        et_buscar = (EditText)findViewById(R.id.et_buscar);
     }
 }

@@ -5,4 +5,9 @@
     <string name="Valor_Pago">Valor_Pago</string>
     <string name="Valor_Latitud">Valor_Latitud</string>
     <string name="Valor_Longitud">Valor_Longitud</string>
+    <string name="Valor_busqueda">Valor_busqueda</string>
+    <string name="Valor_tipo_busqueda">Valor_TBusqueda</string>
+    <string name="Busqueda_categoria">BCat</string>
+    <string name="Busqueda_palabra">BPal</string>
+    <string name="Id_producto">Idp</string>
 </resources>
