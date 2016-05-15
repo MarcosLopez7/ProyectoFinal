@@ -2,4 +2,7 @@
     <string name="app_name">Proyecto Final</string>
     <string name="title_activity_home">HomeActivity</string>
     <string name="title_activity_create_purchase">Map</string>
+    <string name="Valor_Pago">Valor_Pago</string>
+    <string name="Valor_Latitud">Valor_Latitud</string>
+    <string name="Valor_Longitud">Valor_Longitud</string>
 </resources>

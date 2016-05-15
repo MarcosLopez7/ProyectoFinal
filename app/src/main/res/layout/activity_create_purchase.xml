@@ -38,17 +38,20 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Credit"
-            android:id="@+id/rb_credit" />
+            android:id="@+id/rb_credit"
+            android:onClick="onRadioButtonClick"/>
         <RadioButton
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Deposit"
-            android:id="@+id/rb_deposit" />
+            android:id="@+id/rb_deposit"
+            android:onClick="onRadioButtonClick"/>
         <RadioButton
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Cash"
-            android:id="@+id/rb_cash" />
+            android:id="@+id/rb_cash"
+            android:onClick="onRadioButtonClick"/>
     </RadioGroup>
     <TextView
         android:layout_width="wrap_content"
