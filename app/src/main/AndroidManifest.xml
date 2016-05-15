@@ -48,7 +48,8 @@
         <activity
             android:name=".CreatePurchase"
             android:label="@string/title_activity_create_purchase" />
-        <activity android:name=".CreatePurchase2"></activity>
+        <activity android:name=".CreatePurchase2" />
+        <activity android:name=".ValidateActivity"></activity>
     </application>
 
 </manifest>
