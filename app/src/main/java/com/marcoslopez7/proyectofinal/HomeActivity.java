@@ -26,9 +26,10 @@ import okhttp3.Response;
 
 public class HomeActivity extends AppCompatActivity {
 
-    private Button b_buscar_categoria, b_buscar, b_validar, b_crear_categoria, b_vender, b_perfil;
+    private Button b_buscar_categoria, b_buscar, b_validar, b_crear_categoria, b_vender, b_perfil,
+            b_users;
     private final String url = "http://159.203.166.99:8000/products/categorias/";
-    private EditText et_buscar;
+    private EditText et_buscar, et_users;
     private static final String TAG = HomeActivity.class.getSimpleName();
     private JSONArray arr;
     Spinner s_categoria;
@@ -143,6 +144,8 @@ public class HomeActivity extends AppCompatActivity {
         b_vender = (Button)findViewById(R.id.b_sell);
         s_categoria = (Spinner)findViewById(R.id.s_category);
         et_buscar = (EditText)findViewById(R.id.et_buscar);
+        b_users = (Button) findViewById(R.id.b_users);
+        et_users = (EditText) findViewById(R.id.et_search_user);
         OkHttpClient client;
 
         client = new OkHttpClient();

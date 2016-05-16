@@ -92,6 +92,26 @@
             android:layout_row="4"
             android:visibility="invisible"
             android:clickable="false"/>
+
+        <Button
+            android:layout_width="140dp"
+            android:layout_height="75dp"
+            android:text="Search USer"
+            android:id="@+id/b_users"
+            android:layout_row="5"
+            android:layout_column="0"
+            android:visibility="invisible"
+            android:clickable="false" />
+
+        <EditText
+            android:layout_width="140dp"
+            android:layout_height="75dp"
+            android:id="@+id/et_search_user"
+            android:layout_row="5"
+            android:layout_column="2"
+            android:visibility="invisible"/>
+
+
     </GridLayout>
 
 </RelativeLayout>
