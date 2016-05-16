@@ -8,6 +8,8 @@ import android.os.StrictMode;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -40,6 +42,15 @@ public class ViewProfileActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_view_profile);
+        Button b_editar = (Button)findViewById(R.id.b_edit);
+        b_editar.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent lol = new Intent(getApplicationContext(), CreateUserActivity.class);
+                lol.putExtra(getResources().getString(R.string.Owner), true);
+                startActivity(lol);
+            }
+        });
 
         client = new OkHttpClient();
 

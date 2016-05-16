@@ -50,7 +50,9 @@
             android:label="@string/title_activity_create_purchase" />
         <activity android:name=".CreatePurchase2" />
         <activity android:name=".ValidateActivity" />
-        <activity android:name=".ListUsersActivity"></activity>
+        <activity android:name=".ListUsersActivity" />
+        <activity android:name=".Purchase_Sells" />
+        <activity android:name=".ViewPurchaseSell"></activity>
     </application>
 
 </manifest>

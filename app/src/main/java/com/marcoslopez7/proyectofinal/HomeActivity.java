@@ -140,7 +140,7 @@ public class HomeActivity extends AppCompatActivity {
         b_users.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                intent = new Intent(getApplicationContext(), ResultsActivity.class);
+                intent = new Intent(getApplicationContext(), ListUsersActivity.class);
                 intent.putExtra(getResources().getString(R.string.user_search_value),
                         et_users.getText().toString());
                 startActivity(intent);

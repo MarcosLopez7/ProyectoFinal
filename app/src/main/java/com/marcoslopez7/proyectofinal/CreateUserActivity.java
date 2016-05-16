@@ -55,6 +55,7 @@ public class CreateUserActivity extends AppCompatActivity {
     private static final MediaType MEDIA_TYPE_IMAGE = MediaType.parse("image/*");
     private static final MediaType MEDIA_TYPE_VIDEO = MediaType.parse("video/*");
     private static final String url = "http://159.203.166.99:8000/products/create/";
+    private static final String url_update = "http://159.203.166.99:8000/products/updateusuario/" + SessionHelper.id_user + "/";
     private static final String TAG = CreateUserActivity.class.getSimpleName();
     /**
      * ATTENTION: This was auto-generated to implement the App Indexing API.
@@ -66,6 +67,7 @@ public class CreateUserActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_create_user);
+        Intent esta = getIntent();
 
         nameField = (EditText) findViewById(R.id.et_name);
         lastNameField = (EditText) findViewById(R.id.et_last);
@@ -131,13 +133,24 @@ public class CreateUserActivity extends AppCompatActivity {
                         VIDEO_FROM_FILE);
             }
         });
+        if(esta.getBooleanExtra(getResources().getString(R.string.Owner), false)){
+            submitButton.setText("Update");
+            submitButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    update();
+                }
+            });
+        }
+        else{
+            submitButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    submit();
+                }
+            });
+        }
 
-        submitButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                submit();
-            }
-        });
         // ATTENTION: This was auto-generated to implement the App Indexing API.
         // See https://g.co/AppIndexing/AndroidStudio for more information.
         client2 = new GoogleApiClient.Builder(this).addApi(AppIndex.API).build();
@@ -263,5 +276,44 @@ public class CreateUserActivity extends AppCompatActivity {
         );
         AppIndex.AppIndexApi.end(client2, viewAction);
         client2.disconnect();
+    }
+
+    public void update(){
+        OkHttpClient client = new OkHttpClient();
+        RequestBody requestBody = new MultipartBody.Builder()
+                .setType(MultipartBody.FORM)
+                .addFormDataPart("nombre", nameField.getText().toString())
+                .addFormDataPart("apellidos", lastNameField.getText().toString())
+                .addFormDataPart("email", emailField.getText().toString())
+                .addFormDataPart("contrasena", passwordField.getText().toString())
+                .addFormDataPart("telefono", phoneField.getText().toString())
+                .addFormDataPart("foto", imageURL.toString(),
+                        RequestBody.create(MEDIA_TYPE_IMAGE, new File(path))
+                )
+                .addFormDataPart("administrador", "false")
+                .addFormDataPart("video", videoURL.toString(),
+                        RequestBody.create(MEDIA_TYPE_VIDEO, new File(pathV))
+                )
+                .build();
+
+        Request request = new Request.Builder()
+                .url(url_update)
+                .put(requestBody)
+                .build();
+
+        client.newCall(request).enqueue(new Callback() {
+            @Override
+            public void onFailure(Call call, IOException e) {
+                e.printStackTrace();
+            }
+
+            @Override
+            public void onResponse(Call call, Response response) throws IOException {
+                Log.d(TAG, response.body().string());
+                Intent intent = new Intent(getApplicationContext(), MainActivity.class);
+                startActivity(intent);
+
+            }
+        });
     }
 }
