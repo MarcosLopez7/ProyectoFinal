@@ -48,7 +48,7 @@ public class CreatePurchase2 extends AppCompatActivity {
     private String url_fletes = "http://159.203.166.99:8000/products/fletes/";
     private String url_prod = "http://159.203.166.99:8000/products/";
     private String url = "http://159.203.166.99:8000/products/createcompra/";
-    private String url2 = "http://159.203.166.99:8000/products/venta/1/";
+    private String url2 = "http://159.203.166.99:8000/products/venta/";
 
     Spinner spin;
     JSONArray arr;
@@ -227,8 +227,8 @@ public class CreatePurchase2 extends AppCompatActivity {
                 .addFormDataPart("precio_total", "" + price)
                 .addFormDataPart("metodo_pago", opc)
                 .addFormDataPart("coordenadasX", "" + lat)
-                .addFormDataPart("coorenadasY", "" + longi)
-                .addFormDataPart("flete", "" + ""+idf)
+                .addFormDataPart("coordenadasY", "" + longi)
+                .addFormDataPart("flete", ""+idf)
                 .build();
 
         Request request = new Request.Builder()
@@ -244,6 +244,12 @@ public class CreatePurchase2 extends AppCompatActivity {
 
             @Override
             public void onResponse(Call call, Response response) throws IOException {
+                Log.d(TAG, "idp: " + idp);
+                Log.d(TAG, "flete:" + idf);
+                Log.d(TAG, "response:" + response);
+                Log.d(TAG, "coo" + lat);
+                Log.d(TAG, "metodo"+ opc);
+                Log.d(TAG, "cooy"+longi);
                 OkHttpClient client2 = new OkHttpClient();
                 RequestBody requestBody2 = new MultipartBody.Builder()
                         .setType(MultipartBody.FORM)
@@ -252,7 +258,7 @@ public class CreatePurchase2 extends AppCompatActivity {
                         .build();
 
                 Request request2 = new Request.Builder()
-                        .url(url2)
+                        .url(url2+idp+"/")
                         .put(requestBody2)
                         .build();
 
@@ -264,6 +270,7 @@ public class CreatePurchase2 extends AppCompatActivity {
 
                     @Override
                     public void onResponse(Call call, Response response) throws IOException {
+
                         Intent intent = new Intent(getApplicationContext(), HomeActivity.class);
                         startActivity(intent);
                     }

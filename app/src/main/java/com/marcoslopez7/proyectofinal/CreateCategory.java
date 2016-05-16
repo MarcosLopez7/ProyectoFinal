@@ -1,5 +1,6 @@
 package com.marcoslopez7.proyectofinal;
 
+import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -66,6 +67,8 @@ public class CreateCategory extends AppCompatActivity {
             @Override
             public void onResponse(Call call, Response response) throws IOException {
                 Log.d(TAG, response.body().string());
+                Intent intent = new Intent(getApplication(), HomeActivity.class);
+                startActivity(intent);
             }
         });
     }

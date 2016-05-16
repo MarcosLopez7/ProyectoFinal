@@ -43,12 +43,21 @@ public class ViewProfileActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_view_profile);
         Button b_editar = (Button)findViewById(R.id.b_edit);
+        Button b_hist = (Button)findViewById(R.id.b_hist);
         b_editar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent lol = new Intent(getApplicationContext(), CreateUserActivity.class);
                 lol.putExtra(getResources().getString(R.string.Owner), true);
                 startActivity(lol);
+            }
+        });
+        b_hist.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent okint = new Intent(getApplicationContext(),Purchase_Sells.class);
+                okint.putExtra(getResources().getString(R.string.Id_Usuario),SessionHelper.id_user);
+                startActivity(okint);
             }
         });
 

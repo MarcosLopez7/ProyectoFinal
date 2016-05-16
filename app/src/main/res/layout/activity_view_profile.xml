@@ -128,5 +128,14 @@
         android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true" />
 
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="History"
+        android:id="@+id/b_hist"
+        android:layout_alignParentBottom="true"
+        android:layout_toRightOf="@+id/b_edit"
+        android:layout_toEndOf="@+id/b_edit" />
+
 
 </RelativeLayout>

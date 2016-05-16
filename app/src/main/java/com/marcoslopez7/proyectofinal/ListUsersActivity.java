@@ -44,12 +44,14 @@ public class ListUsersActivity extends AppCompatActivity {
                 Intent intent2 = new Intent(getApplicationContext(), Purchase_Sells.class);
                 try{
                     intent2.putExtra(getResources().getString(R.string.Id_Usuario), (int)arreglo.getJSONObject(position).getInt("pk"));
+                    Log.d(TAG, "idu: "+arreglo.getJSONObject(position).getInt("pk"));
                     Log.d(TAG, "entro");
+                    startActivity(intent2);
                 }
                 catch (Exception e){
                     e.printStackTrace();
                 }
-                startActivity(intent2);
+
             }
         });
 
