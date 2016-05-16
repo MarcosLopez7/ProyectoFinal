@@ -10,24 +10,62 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Spinner;
+import android.widget.Toast;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.io.IOException;
+
+import okhttp3.Call;
+import okhttp3.Callback;
+import okhttp3.OkHttpClient;
+import okhttp3.Request;
+import okhttp3.Response;
 
 public class HomeActivity extends AppCompatActivity {
 
     private Button b_buscar_categoria, b_buscar, b_validar, b_crear_categoria, b_vender, b_perfil;
+    private final String url = "http://159.203.166.99:8000/products/categorias/";
     private EditText et_buscar;
     private static final String TAG = HomeActivity.class.getSimpleName();
+    private JSONArray arr;
     Spinner s_categoria;
-    String[] items = new String[]{"Electronicos","Comida","Ropa"};
+    String[] items;
     Intent intent;
-    String Resp;
+    int Resp;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
         init();
-        Log.d(TAG,"Session id: " + SessionHelper.id_user);
-        ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, R.layout.support_simple_spinner_dropdown_item, items);
+        Log.d(TAG, "Session id: " + SessionHelper.id_user);
+        s_categoria.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> arg0, View arg1, int arg2, long arg3) {
+                try {
+                    Resp = arr.getJSONObject(arg2).getInt("pk");
+                }
+                catch (Exception e){
+                    e.printStackTrace();
+                }
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> arg0) {
+                // TODO Auto-generated method stub
+                try {
+                    Resp = arr.getJSONObject(0).getInt("pk");
+                }
+                catch (Exception e){
+                    e.printStackTrace();
+                }
+            }
+
+        });
+        /*ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, R.layout.support_simple_spinner_dropdown_item, items);
         s_categoria.setAdapter(adapter);
         s_categoria.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
@@ -41,7 +79,7 @@ public class HomeActivity extends AppCompatActivity {
                 Resp = arg0.getItemAtPosition(0).toString();
             }
 
-        });
+        });*/
         if(SessionHelper.admin_user){
             b_crear_categoria.setVisibility(View.VISIBLE);
             b_validar.setVisibility(View.VISIBLE);
@@ -105,5 +143,52 @@ public class HomeActivity extends AppCompatActivity {
         b_vender = (Button)findViewById(R.id.b_sell);
         s_categoria = (Spinner)findViewById(R.id.s_category);
         et_buscar = (EditText)findViewById(R.id.et_buscar);
+        OkHttpClient client;
+
+        client = new OkHttpClient();
+
+        Request request = new Request.Builder().url(url).build();
+
+        client.newCall(request).enqueue(new Callback() {
+            @Override
+            public void onFailure(Call call, IOException e) {
+                e.printStackTrace();
+            }
+
+            @Override
+            public void onResponse(Call call, Response response) throws IOException {
+                final String jsondata = response.body().string();
+                if (response.isSuccessful()) {
+
+                    runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            try {
+                                setList(jsondata);
+                            } catch (Exception e) {
+                                e.printStackTrace();
+                            }
+                        }
+                    });
+                } else {
+
+                }
+                /**/
+
+            }
+        });
+
+    }
+    private void setList(String js)throws JSONException{
+        JSONArray categorias = new JSONArray(js);
+        Log.d(TAG,"length: " + categorias.length());
+        items = new String[categorias.length()];
+        for(int i = 0; i < categorias.length(); ++i){
+            items[i] = categorias.getJSONObject(i).getString("nombre");
+            Log.d(TAG, "nombre: " + items[i]);
+        }
+        ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, R.layout.support_simple_spinner_dropdown_item, items);
+        s_categoria.setAdapter(adapter);
+        arr = categorias;
     }
 }

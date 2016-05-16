@@ -11,10 +11,15 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Spinner;
 import android.widget.TextView;
+
+import org.json.JSONArray;
+import org.json.JSONException;
 
 import java.io.File;
 import java.io.IOException;
@@ -33,11 +38,17 @@ public class CreateProduct extends AppCompatActivity {
     private Button b_select_pic, b_submit;
     private EditText name_et, description_et, price_et;
     private TextView photo_tv;
+    private Spinner spin;
     private Uri imageURL;
     private static final int PICK_FROM_CAMERA = 1, PICK_FROM_FILE = 2;
     private static final MediaType MEDIA_TYPE_IMAGE = MediaType.parse("image/*");
     private static final String url = "http://159.203.166.99:8000/products/createproduct/", TAG = CreateUserActivity.class.getSimpleName();
+    private static final String url2 = "http://159.203.166.99:8000/products/categorias/";
+
     private String path = "";
+    private String[] items;
+    JSONArray arr;
+    int Resp;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -45,13 +56,32 @@ public class CreateProduct extends AppCompatActivity {
         setContentView(R.layout.activity_create_product);
         init();
 
-        final String[] items = new String[]{"Camara", "Galeria"};
-        ArrayAdapter<String> adapter = new ArrayAdapter<String>(
-                this,
-                android.R.layout.select_dialog_item,
-                items
-        );
+        final String[] plop = new String[]{"Camara", "Galeria"};
+        ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, android.R.layout.select_dialog_item, plop);
 
+        spin.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> arg0, View arg1, int arg2, long arg3) {
+                try {
+                    Resp = arr.getJSONObject(arg2).getInt("pk");
+                }
+                catch (Exception e){
+                    e.printStackTrace();
+                }
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> arg0) {
+                // TODO Auto-generated method stub
+                try {
+                    Resp = arr.getJSONObject(0).getInt("pk");
+                }
+                catch (Exception e){
+                    e.printStackTrace();
+                }
+            }
+
+        });
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setTitle("Selecciona una imagen");
         builder.setAdapter(adapter, new DialogInterface.OnClickListener() {
@@ -103,6 +133,40 @@ public class CreateProduct extends AppCompatActivity {
         description_et = (EditText) findViewById(R.id.et_description);
         price_et = (EditText) findViewById(R.id.et_price);
         photo_tv = (TextView) findViewById(R.id.tv_picture);
+        spin = (Spinner)findViewById(R.id.s_category);
+        OkHttpClient client2;
+
+        client2 = new OkHttpClient();
+
+        Request request = new Request.Builder().url(url2).build();
+
+        client2.newCall(request).enqueue(new Callback() {
+            @Override
+            public void onFailure(Call call, IOException e) {
+                e.printStackTrace();
+            }
+            @Override
+            public void onResponse(Call call, Response response) throws IOException {
+                final String jsondata = response.body().string();
+                if (response.isSuccessful()) {
+
+                    runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            try {
+                                setList(jsondata);
+                            } catch (Exception e) {
+                                e.printStackTrace();
+                            }
+                        }
+                    });
+                } else {
+
+                }
+                /**/
+
+            }
+        });
     }
 
     @Override
@@ -167,4 +231,16 @@ public class CreateProduct extends AppCompatActivity {
 
     }
 
+    private void setList(String js)throws JSONException {
+        JSONArray categorias = new JSONArray(js);
+        Log.d(TAG,"length: " + categorias.length());
+        items = new String[categorias.length()];
+        for(int i = 0; i < categorias.length(); ++i){
+            items[i] = categorias.getJSONObject(i).getString("nombre");
+            Log.d(TAG, "nombre: " + items[i]);
+        }
+        ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, R.layout.support_simple_spinner_dropdown_item, items);
+        spin.setAdapter(adapter);
+        arr = categorias;
+    }
 }
