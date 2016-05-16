@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.graphics.drawable.Drawable;
 import android.media.session.MediaController;
 import android.media.session.MediaSession;
+import android.net.Uri;
 import android.os.StrictMode;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -120,12 +121,13 @@ public class ViewProfileActivity extends AppCompatActivity {
         tv_phone.setText(user.getString("telefono"));
         iv = (ImageView)findViewById(R.id.iv_imagen);
         video = (VideoView) findViewById(R.id.video);
-        s = user.getString("foto").substring(53);
+        s = user.getString("foto").substring(43);
         while(s.charAt(0) != 'i'){
             s = s.substring(1);
         }
         InputStream is;
         Drawable d;
+
         try {
              is = (InputStream) new URL("http://159.203.166.99:8000/static/" + s).getContent();
             d = Drawable.createFromStream(is, "profile pic");
@@ -136,14 +138,16 @@ public class ViewProfileActivity extends AppCompatActivity {
             e.printStackTrace();
         }
 
-        /*try {
-            MediaController mediaController = new MediaController(this, MediaSession.Token.CREATOR);
+        s = user.getString("video").substring(43);
+        while(s.charAt(0) != 'v'){
+            s = s.substring(1);
+        }
 
-        } catch (Exception e){
-            e.printStackTrace();
-        }*/
+        Uri uri = Uri.parse("http://159.203.166.99:8000/static/" + s);
+        video.setMediaController(new android.widget.MediaController(this));
+        video.setVideoURI(uri);
+        video.requestFocus();
+        video.start();
 
-
-        Log.d(TAG, "Sub: " + user.getString("foto").substring(54));
     }
 }
