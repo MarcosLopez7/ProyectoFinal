@@ -44,6 +44,8 @@ public class CreateProduct extends AppCompatActivity {
     private static final MediaType MEDIA_TYPE_IMAGE = MediaType.parse("image/*");
     private static final String url = "http://159.203.166.99:8000/products/createproduct/", TAG = CreateUserActivity.class.getSimpleName();
     private static final String url2 = "http://159.203.166.99:8000/products/categorias/";
+    private static final String url_put = "http://159.203.166.99:8000/products/edit/";
+    private int id_p;
 
     private String path = "";
     private String[] items;
@@ -55,6 +57,26 @@ public class CreateProduct extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_create_product);
         init();
+        Intent esta = getIntent();
+
+        if(esta.getBooleanExtra(getResources().getString(R.string.Owner), false)){
+            b_submit.setText("Update");
+            b_submit.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    update();
+                }
+            });
+            id_p = esta.getIntExtra(getResources().getString(R.string.Id_producto),0);
+        }
+        else{
+            b_submit.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    submit();
+                }
+            });
+        }
 
         final String[] plop = new String[]{"Camara", "Galeria"};
         ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, android.R.layout.select_dialog_item, plop);
@@ -118,12 +140,7 @@ public class CreateProduct extends AppCompatActivity {
             }
         });
 
-        b_submit.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                submit();
-            }
-        });
+
     }
 
     private void init(){
@@ -145,6 +162,7 @@ public class CreateProduct extends AppCompatActivity {
             public void onFailure(Call call, IOException e) {
                 e.printStackTrace();
             }
+
             @Override
             public void onResponse(Call call, Response response) throws IOException {
                 final String jsondata = response.body().string();
@@ -208,13 +226,49 @@ public class CreateProduct extends AppCompatActivity {
                 .addFormDataPart("ultima_modificacion", "yo")
                 .addFormDataPart("aprobado", "false")
                 .addFormDataPart("vendido", "false")
-                .addFormDataPart("usuario", "1")
-                .addFormDataPart("categoria", "1")
+                .addFormDataPart("usuario", ""+SessionHelper.id_user)
+                .addFormDataPart("categoria", ""+Resp)
                 .build();
 
         Request request = new Request.Builder()
                 .url(url)
                 .post(requestBody)
+                .build();
+
+        client.newCall(request).enqueue(new Callback() {
+            @Override
+            public void onFailure(Call call, IOException e) {
+                e.printStackTrace();
+            }
+
+            @Override
+            public void onResponse(Call call, Response response) throws IOException {
+                Log.d(TAG, response.body().string());
+            }
+        });
+
+    }
+
+    private void update() {
+        OkHttpClient client = new OkHttpClient();
+        RequestBody requestBody = new MultipartBody.Builder()
+                .setType(MultipartBody.FORM)
+                .addFormDataPart("nombre", name_et.getText().toString())
+                .addFormDataPart("descripcion", description_et.getText().toString())
+                .addFormDataPart("precio", price_et.getText().toString())
+                .addFormDataPart("foto", imageURL.toString(),
+                        RequestBody.create(MEDIA_TYPE_IMAGE, new File(path))
+                )
+                .addFormDataPart("ultima_modificacion", "yo")
+                .addFormDataPart("aprobado", "false")
+                .addFormDataPart("vendido", "false")
+                .addFormDataPart("usuario", ""+SessionHelper.id_user)
+                .addFormDataPart("categoria", ""+Resp)
+                .build();
+
+        Request request = new Request.Builder()
+                .url(url_put+id_p+"/")
+                .put(requestBody)
                 .build();
 
         client.newCall(request).enqueue(new Callback() {

@@ -87,8 +87,21 @@
         android:text="Edit"
         android:id="@+id/b_edit"
         android:layout_alignParentBottom="true"
-        android:layout_centerHorizontal="true"
         android:visibility="invisible"
         android:clickable="false"/>
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Delete"
+        android:id="@+id/b_delete"
+        android:layout_alignParentBottom="true"
+        android:layout_toRightOf="@+id/b_edit"
+        android:visibility="invisible"
+        android:clickable="false"/>
+
+    <!--
+    android:visibility="invisible"
+    android:clickable="false"/>-->
 
 </RelativeLayout>
