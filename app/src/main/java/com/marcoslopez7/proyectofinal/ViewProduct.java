@@ -26,7 +26,7 @@ import okhttp3.Request;
 import okhttp3.Response;
 
 public class ViewProduct extends AppCompatActivity {
-    Button b_purchase, b_edit;
+    Button b_purchase, b_edit, b_delete;
     private static final String TAG = ViewProduct.class.getSimpleName();
     TextView tv_nombre,tv_descripcion, tv_precio;
     ImageView iv;
@@ -54,6 +54,15 @@ public class ViewProduct extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(getApplicationContext(), CreateProduct.class);
+                intent.putExtra(getResources().getString(R.string.Owner), true);
+                intent.putExtra(getResources().getString(R.string.Id_producto), id);
+                startActivity(intent);
+            }
+        });
+        b_delete.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                delete();
             }
         });
     }
@@ -64,6 +73,7 @@ public class ViewProduct extends AppCompatActivity {
         tv_precio = (TextView)findViewById(R.id.tv_price_content);
         iv = (ImageView)findViewById(R.id.iv_photo_content);
         b_edit = (Button)findViewById(R.id.b_edit);
+        b_delete = (Button)findViewById(R.id.b_delete);
         OkHttpClient client = new OkHttpClient();
         Request request = new Request.Builder().url(url+id).build();
 
@@ -126,6 +136,29 @@ public class ViewProduct extends AppCompatActivity {
         if(obj.getInt("usuario") == SessionHelper.id_user){
             b_edit.setVisibility(View.VISIBLE);
             b_edit.setClickable(true);
+            b_delete.setClickable(true);
+            b_delete.setVisibility(View.VISIBLE);
         }
     }
+    private void delete(){
+        OkHttpClient client2;
+
+        client2 = new OkHttpClient();
+
+        Request request = new Request.Builder().url(url+"/delete/"+id+"/").delete().build();
+
+        client2.newCall(request).enqueue(new Callback() {
+            @Override
+            public void onFailure(Call call, IOException e) {
+                e.printStackTrace();
+            }
+
+            @Override
+            public void onResponse(Call call, Response response) throws IOException {
+                Intent intent = new Intent(getApplicationContext(), HomeActivity.class);
+                startActivity(intent);
+            }
+        });
+    }
 }
+
