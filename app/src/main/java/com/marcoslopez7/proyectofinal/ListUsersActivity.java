@@ -24,7 +24,7 @@ public class ListUsersActivity extends AppCompatActivity {
 
     private ListView listView;
     private String url_u = "http://159.203.166.99:8000/usuarios/";
-    private String url_b = "http://159.203.166.99:8000/products/usuarionombre/?text=";
+    private String url_b = "http://159.203.166.99:8000/products/usuarionombre/?search=";
     private String[] items;
     private static final String TAG = ListUsersActivity.class.getSimpleName();
     JSONArray arreglo;
@@ -37,7 +37,7 @@ public class ListUsersActivity extends AppCompatActivity {
         Intent intent = getIntent();
         String search_value = intent.getStringExtra(
                 getResources().getString(R.string.user_search_value));
-        CrearConsulta(url_u);
+        CrearConsulta(url_b+search_value);
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
