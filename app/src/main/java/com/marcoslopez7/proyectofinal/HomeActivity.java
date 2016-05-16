@@ -86,6 +86,10 @@ public class HomeActivity extends AppCompatActivity {
             b_validar.setVisibility(View.VISIBLE);
             b_crear_categoria.setClickable(true);
             b_crear_categoria.setClickable(true);
+            b_users.setVisibility(View.VISIBLE);
+            b_users.setClickable(true);
+            et_users.setVisibility(View.VISIBLE);
+            et_users.setClickable(true);
         }
         b_buscar_categoria.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -130,6 +134,15 @@ public class HomeActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 intent = new Intent(getApplicationContext(), CreateProduct.class);
+                startActivity(intent);
+            }
+        });
+        b_users.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                intent = new Intent(getApplicationContext(), ResultsActivity.class);
+                intent.putExtra(getResources().getString(R.string.user_search_value),
+                        et_users.getText().toString());
                 startActivity(intent);
             }
         });

@@ -11,4 +11,5 @@
     <string name="Busqueda_palabra">BPal</string>
     <string name="Id_producto">Idp</string>
     <string name="Owner">Owner</string>
+    <string name="user_search_value">user_value</string>
 </resources>
