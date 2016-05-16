@@ -100,7 +100,7 @@ public class HomeActivity extends AppCompatActivity {
             public void onClick(View v) {
                 intent = new Intent(getApplicationContext(), ResultsActivity.class);
                 intent.putExtra(getResources().getString(R.string.Valor_tipo_busqueda), getResources().getString(R.string.Busqueda_palabra));
-                intent.putExtra(getResources().getString(R.string.Valor_busqueda), et_buscar.getText());
+                intent.putExtra(getResources().getString(R.string.Valor_busqueda), ""+et_buscar.getText());
                 startActivity(intent);
             }
         });
