@@ -217,6 +217,8 @@ public class CreateUserActivity extends AppCompatActivity {
             @Override
             public void onResponse(Call call, Response response) throws IOException {
                 Log.d(TAG, response.body().string());
+                Intent intent = new Intent(getApplicationContext(), MainActivity.class);
+                startActivity(intent);
 
             }
         });

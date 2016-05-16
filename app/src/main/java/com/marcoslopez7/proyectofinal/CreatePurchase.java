@@ -42,6 +42,7 @@ public class CreatePurchase extends FragmentActivity implements OnMapReadyCallba
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
+        final Intent esta = getIntent();
         b_next = (Button) findViewById(R.id.b_next);
         b_next.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -50,6 +51,7 @@ public class CreatePurchase extends FragmentActivity implements OnMapReadyCallba
                 intent.putExtra(getResources().getString(R.string.Valor_Latitud) ,marc.getPosition().latitude);
                 intent.putExtra(getResources().getString(R.string.Valor_Longitud) ,marc.getPosition().longitude);
                 intent.putExtra(getResources().getString(R.string.Valor_Pago) ,opcionPago);
+                intent.putExtra(getResources().getString(R.string.Id_producto),(int)esta.getIntExtra(getResources().getString(R.string.Id_producto),0));
                 startActivity(intent);
             }
         });

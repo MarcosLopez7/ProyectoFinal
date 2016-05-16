@@ -46,7 +46,7 @@ public class ViewProduct extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(getApplicationContext(), CreatePurchase.class);
-                intent.putExtra(getResources().getString(R.string.Id_producto), id);
+                intent.putExtra(getResources().getString(R.string.Id_producto), (int)id);
                 startActivity(intent);
             }
         });
