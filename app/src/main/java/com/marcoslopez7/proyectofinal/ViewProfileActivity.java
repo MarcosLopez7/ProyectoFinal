@@ -2,6 +2,8 @@ package com.marcoslopez7.proyectofinal;
 
 import android.content.Intent;
 import android.graphics.drawable.Drawable;
+import android.media.session.MediaController;
+import android.media.session.MediaSession;
 import android.os.StrictMode;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -9,6 +11,7 @@ import android.util.Log;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
+import android.widget.VideoView;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -30,7 +33,8 @@ public class ViewProfileActivity extends AppCompatActivity {
     private OkHttpClient client;
     private TextView tv_name, tv_email,tv_phone;
     private static final String TAG = ViewProfileActivity.class.getSimpleName();
-    ImageView iv;
+    private ImageView iv;
+    private VideoView video;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -95,6 +99,7 @@ public class ViewProfileActivity extends AppCompatActivity {
         tv_email.setText(user.getString("email"));
         tv_phone.setText(user.getString("telefono"));
         iv = (ImageView)findViewById(R.id.iv_imagen);
+        video = (VideoView) findViewById(R.id.video);
         s = user.getString("foto").substring(53);
         while(s.charAt(0) != 'i'){
             s = s.substring(1);
@@ -110,6 +115,14 @@ public class ViewProfileActivity extends AppCompatActivity {
         catch (Exception e){
             e.printStackTrace();
         }
+
+        /*try {
+            MediaController mediaController = new MediaController(this, MediaSession.Token.CREATOR);
+
+        } catch (Exception e){
+            e.printStackTrace();
+        }*/
+
 
         Log.d(TAG, "Sub: " + user.getString("foto").substring(54));
     }
