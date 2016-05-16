@@ -143,6 +143,7 @@ public class HomeActivity extends AppCompatActivity {
         b_validar = (Button)findViewById(R.id.b_validate);
         b_vender = (Button)findViewById(R.id.b_sell);
         s_categoria = (Spinner)findViewById(R.id.s_category);
+        //allah uakber
         et_buscar = (EditText)findViewById(R.id.et_buscar);
         b_users = (Button) findViewById(R.id.b_users);
         et_users = (EditText) findViewById(R.id.et_search_user);
