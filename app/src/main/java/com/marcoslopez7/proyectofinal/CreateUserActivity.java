@@ -346,7 +346,7 @@ public class CreateUserActivity extends AppCompatActivity {
         return Patterns.EMAIL_ADDRESS.matcher(emailField.getText().toString()).matches();
     }
     private boolean validate(){
-        if(nameField.getText().toString().equals("") || lastNameField.getText().toString().equals("") | emailField.getText().toString().equals("") || passwordField.getText().toString().equals("") || phoneField.getText().toString().equals("") || imageURL.toString().equals("")){
+        if(nameField.getText().toString().equals("") || lastNameField.getText().toString().equals("") | emailField.getText().toString().equals("") || passwordField.getText().toString().equals("") || phoneField.getText().toString().equals("") || imageURL.toString().equals("") || videoURL.toString().equals("")){
             return false;
         }
         else{
