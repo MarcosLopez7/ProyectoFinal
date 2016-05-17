@@ -10,6 +10,7 @@ import android.provider.MediaStore;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
+import android.util.Patterns;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
@@ -23,6 +24,7 @@ import com.google.android.gms.common.api.GoogleApiClient;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.regex.Matcher;
 
 import okhttp3.Call;
 import okhttp3.Callback;
@@ -138,7 +140,12 @@ public class CreateUserActivity extends AppCompatActivity {
             submitButton.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    update();
+                    if(is_valid()){
+                        update();
+                    }else {
+                        return;
+                    }
+
                 }
             });
         }
@@ -146,7 +153,11 @@ public class CreateUserActivity extends AppCompatActivity {
             submitButton.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    submit();
+                    if(Patterns.EMAIL_ADDRESS.matcher(emailField.getText().toString()).matches()){
+                        submit();
+                    }else {
+                        return;
+                    }
                 }
             });
         }
@@ -315,5 +326,9 @@ public class CreateUserActivity extends AppCompatActivity {
 
             }
         });
+    }
+
+    private boolean is_valid(){
+        return Patterns.EMAIL_ADDRESS.matcher(emailField.getText().toString()).matches();
     }
 }
