@@ -22,7 +22,9 @@ public class ViewPurchaseSell extends AppCompatActivity {
     private String url = "";
     private String url_deliver = "";
     private TextView tv_pname, tv_buyer, tv_price, tv_method, tv_street, tv_city, tv_transport;
+
     private Button b_deliver;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -46,6 +48,7 @@ public class ViewPurchaseSell extends AppCompatActivity {
                 llego();
             }
         });
+
     }
 
     private void CrearConsulta(String url){

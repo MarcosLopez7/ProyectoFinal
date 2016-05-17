@@ -8,6 +8,7 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
+import android.widget.TextView;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -30,7 +31,11 @@ public class Purchase_Sells extends AppCompatActivity {
     String[] items;
     String[] items2;
     JSONArray compras, ventas;
+    private TextView totalS, totalP, totalT;
     int idu, idp;
+    private double totalPu = 0.0;
+    private double totalSe = 0.0;
+    private double totalTo = 0.0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -40,6 +45,9 @@ public class Purchase_Sells extends AppCompatActivity {
         idu = esta.getIntExtra(getResources().getString(R.string.Id_Usuario), 0);
         Log.d(TAG, "id_u: " + idu);
         lv_sells = (ListView)findViewById(R.id.lv_sells);
+        totalS = (TextView) findViewById(R.id.tv_sells_t);
+        totalP = (TextView) findViewById(R.id.tv_purchase_t);
+        totalT = (TextView) findViewById(R.id.tv_total);
         lv_purchases = (ListView)findViewById(R.id.lv_purchase);
         CrearConsultas(url_purchase+idu,url_sells+idu);
         lv_sells.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -139,7 +147,7 @@ public class Purchase_Sells extends AppCompatActivity {
         items = new String[categorias.length()];
         for(int i = 0; i < categorias.length(); ++i){
             items[i] = categorias.getJSONObject(i).getString("nombre");
-            //Log.d(TAG, "nombre: " + items[i]);
+            totalPu += categorias.getJSONObject(i).getDouble("precio");
         }
         ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, items);
         lv_purchases.setAdapter(adapter);
@@ -151,10 +159,14 @@ public class Purchase_Sells extends AppCompatActivity {
         Log.d(TAG,"num:"+cat.length());
         for(int i = 0; i < cat.length(); ++i){
             items2[i] = cat.getJSONObject(i).getString("nombre");
-            Log.d(TAG, "nombre: " + items2[i]);
+            totalSe += cat.getJSONObject(i).getDouble("precio");
         }
         ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, items2);
         lv_sells.setAdapter(adapter);
+        totalTo = totalSe - totalPu;
+        totalP.setText(totalP.getText().toString() + totalPu);
+        totalS.setText(totalS.getText().toString() + totalSe);
+        totalT.setText(totalT.getText().toString() + totalTo);
         ventas = cat;
     }
 }

@@ -8,6 +8,7 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
+import android.widget.TextView;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -83,6 +84,9 @@ public class ValidateActivity extends AppCompatActivity {
     private void setList(String js)throws JSONException {
         JSONArray categorias = new JSONArray(js);
         items = new String[categorias.length()];
+        if (categorias.length() == 0){
+            ((TextView)findViewById(R.id.tv_noresuults)).setVisibility(View.VISIBLE);
+        }
         for(int i = 0; i < categorias.length(); ++i){
             items[i] = categorias.getJSONObject(i).getString("nombre");
             //Log.d(TAG, "nombre: " + items[i]);

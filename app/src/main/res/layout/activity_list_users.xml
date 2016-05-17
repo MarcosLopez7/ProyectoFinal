@@ -18,6 +18,13 @@
         android:layout_marginBottom="24dp"
         android:layout_below="@+id/tv_title">
 
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="No Results"
+            android:id="@+id/tv_noresuults"
+            android:visibility="invisible"/>
+
         <ListView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
