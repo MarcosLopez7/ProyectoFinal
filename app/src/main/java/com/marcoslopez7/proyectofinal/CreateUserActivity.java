@@ -214,6 +214,11 @@ public class CreateUserActivity extends AppCompatActivity {
     }
 
     private void submit() {
+        if(!validate()){
+            Toast t = Toast.makeText(getApplicationContext(), "Please fill all the camps", Toast.LENGTH_SHORT);
+            t.show();
+            return;
+        }
         OkHttpClient client = new OkHttpClient();
         RequestBody requestBody = new MultipartBody.Builder()
                 .setType(MultipartBody.FORM)
@@ -294,6 +299,11 @@ public class CreateUserActivity extends AppCompatActivity {
     }
 
     public void update(){
+        if(!validate()){
+            Toast t = Toast.makeText(getApplicationContext(), "Please fill all the camps", Toast.LENGTH_SHORT);
+            t.show();
+            return;
+        }
         OkHttpClient client = new OkHttpClient();
         RequestBody requestBody = new MultipartBody.Builder()
                 .setType(MultipartBody.FORM)
@@ -334,5 +344,13 @@ public class CreateUserActivity extends AppCompatActivity {
 
     private boolean is_valid(){
         return Patterns.EMAIL_ADDRESS.matcher(emailField.getText().toString()).matches();
+    }
+    private boolean validate(){
+        if(nameField.getText().toString().equals("") || lastNameField.getText().toString().equals("") | emailField.getText().toString().equals("") || passwordField.getText().toString().equals("") || phoneField.getText().toString().equals("") || imageURL.toString().equals("")){
+            return false;
+        }
+        else{
+            return true;
+        }
     }
 }

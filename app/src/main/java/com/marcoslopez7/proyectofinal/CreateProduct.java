@@ -17,6 +17,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -214,6 +215,11 @@ public class CreateProduct extends AppCompatActivity {
     }
 
     private void submit() {
+        if(!validate()){
+            Toast t = Toast.makeText(getApplicationContext(), "Please fill all the camps", Toast.LENGTH_SHORT);
+            t.show();
+            return;
+        }
         OkHttpClient client = new OkHttpClient();
         RequestBody requestBody = new MultipartBody.Builder()
                 .setType(MultipartBody.FORM)
@@ -251,6 +257,11 @@ public class CreateProduct extends AppCompatActivity {
     }
 
     private void update() {
+        if(!validate()){
+            Toast t = Toast.makeText(getApplicationContext(), "Please fill all the camps", Toast.LENGTH_SHORT);
+            t.show();
+            return;
+        }
         OkHttpClient client = new OkHttpClient();
         RequestBody requestBody = new MultipartBody.Builder()
                 .setType(MultipartBody.FORM)
@@ -298,5 +309,13 @@ public class CreateProduct extends AppCompatActivity {
         ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, R.layout.support_simple_spinner_dropdown_item, items);
         spin.setAdapter(adapter);
         arr = categorias;
+    }
+
+    private boolean validate(){
+        if(name_et.getText().toString().equals("") || price_et.getText().toString().equals("") || description_et.getText().toString().equals("") || imageURL.toString().equals("")){
+            return false;
+        }
+        else
+            return true;
     }
 }
