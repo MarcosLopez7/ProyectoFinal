@@ -8,6 +8,7 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
+import android.widget.TextView;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -65,6 +66,9 @@ public class ResultsActivity extends AppCompatActivity {
     }
     private void setList(String js)throws JSONException{
         JSONArray categorias = new JSONArray(js);
+        if (categorias.length() == 0){
+            ((TextView)findViewById(R.id.tv_noresuults)).setVisibility(View.VISIBLE);
+        }
         items = new String[categorias.length()];
         for(int i = 0; i < categorias.length(); ++i){
             items[i] = categorias.getJSONObject(i).getString("nombre");
@@ -73,6 +77,7 @@ public class ResultsActivity extends AppCompatActivity {
         ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, items);
         lv.setAdapter(adapter);
         arreglo = categorias;
+
     }
 
     private void CrearConsulta(String url){
@@ -100,6 +105,7 @@ public class ResultsActivity extends AppCompatActivity {
                         }
                     });
                 } else {
+                    ((TextView)findViewById(R.id.tv_noresuults)).setVisibility(View.VISIBLE);
                 }
                 /**/
 

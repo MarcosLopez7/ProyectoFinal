@@ -143,6 +143,8 @@ public class CreateUserActivity extends AppCompatActivity {
                     if(is_valid()){
                         update();
                     }else {
+                        Toast t = Toast.makeText(getApplicationContext(), "Invalid email", Toast.LENGTH_SHORT);
+                        t.show();
                         return;
                     }
 
@@ -156,6 +158,8 @@ public class CreateUserActivity extends AppCompatActivity {
                     if(Patterns.EMAIL_ADDRESS.matcher(emailField.getText().toString()).matches()){
                         submit();
                     }else {
+                        Toast t = Toast.makeText(getApplicationContext(), "Invalid email", Toast.LENGTH_SHORT);
+                        t.show();
                         return;
                     }
                 }
