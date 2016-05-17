@@ -22,6 +22,9 @@ import com.google.android.gms.appindexing.Action;
 import com.google.android.gms.appindexing.AppIndex;
 import com.google.android.gms.common.api.GoogleApiClient;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.io.File;
 import java.io.IOException;
 import java.util.regex.Matcher;
@@ -58,6 +61,7 @@ public class CreateUserActivity extends AppCompatActivity {
     private static final MediaType MEDIA_TYPE_VIDEO = MediaType.parse("video/*");
     private static final String url = "http://159.203.166.99:8000/products/create/";
     private static final String url_update = "http://159.203.166.99:8000/products/updateusuario/" + SessionHelper.id_user + "/";
+    private static final String url_llenar = "http://159.203.166.99:8000/products/usuario/" + SessionHelper.id_user;
     private static final String TAG = CreateUserActivity.class.getSimpleName();
     /**
      * ATTENTION: This was auto-generated to implement the App Indexing API.
@@ -137,6 +141,7 @@ public class CreateUserActivity extends AppCompatActivity {
         });
         if(esta.getBooleanExtra(getResources().getString(R.string.Owner), false)){
             submitButton.setText("Update");
+            llenar();
             submitButton.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -305,22 +310,47 @@ public class CreateUserActivity extends AppCompatActivity {
             return;
         }
         OkHttpClient client = new OkHttpClient();
-        RequestBody requestBody = new MultipartBody.Builder()
-                .setType(MultipartBody.FORM)
-                .addFormDataPart("nombre", nameField.getText().toString())
-                .addFormDataPart("apellidos", lastNameField.getText().toString())
-                .addFormDataPart("email", emailField.getText().toString())
-                .addFormDataPart("contrasena", passwordField.getText().toString())
-                .addFormDataPart("telefono", phoneField.getText().toString())
-                .addFormDataPart("foto", imageURL.toString(),
-                        RequestBody.create(MEDIA_TYPE_IMAGE, new File(path))
-                )
-                .addFormDataPart("administrador", "false")
-                .addFormDataPart("video", videoURL.toString(),
-                        RequestBody.create(MEDIA_TYPE_VIDEO, new File(pathV))
-                )
-                .build();
-
+        RequestBody requestBody;
+        if (path.equals("") && pathV.equals("")) {
+            requestBody = new MultipartBody.Builder()
+                    .setType(MultipartBody.FORM)
+                    .addFormDataPart("nombre", nameField.getText().toString())
+                    .addFormDataPart("apellidos", lastNameField.getText().toString())
+                    .addFormDataPart("email", emailField.getText().toString())
+                    .addFormDataPart("contrasena", passwordField.getText().toString())
+                    .addFormDataPart("telefono", phoneField.getText().toString())
+                    .addFormDataPart("administrador", "false")
+                    .build();
+        } else if (pathV.equals("")){
+            requestBody = new MultipartBody.Builder()
+                    .setType(MultipartBody.FORM)
+                    .addFormDataPart("nombre", nameField.getText().toString())
+                    .addFormDataPart("apellidos", lastNameField.getText().toString())
+                    .addFormDataPart("email", emailField.getText().toString())
+                    .addFormDataPart("contrasena", passwordField.getText().toString())
+                    .addFormDataPart("telefono", phoneField.getText().toString())
+                    .addFormDataPart("foto", imageURL.toString(),
+                            RequestBody.create(MEDIA_TYPE_IMAGE, new File(path))
+                    )
+                    .addFormDataPart("administrador", "false")
+                    .build();
+        } else {
+            requestBody = new MultipartBody.Builder()
+                    .setType(MultipartBody.FORM)
+                    .addFormDataPart("nombre", nameField.getText().toString())
+                    .addFormDataPart("apellidos", lastNameField.getText().toString())
+                    .addFormDataPart("email", emailField.getText().toString())
+                    .addFormDataPart("contrasena", passwordField.getText().toString())
+                    .addFormDataPart("telefono", phoneField.getText().toString())
+                    .addFormDataPart("foto", imageURL.toString(),
+                            RequestBody.create(MEDIA_TYPE_IMAGE, new File(path))
+                    )
+                    .addFormDataPart("administrador", "false")
+                    .addFormDataPart("video", videoURL.toString(),
+                            RequestBody.create(MEDIA_TYPE_VIDEO, new File(pathV))
+                    )
+                    .build();
+        }
         Request request = new Request.Builder()
                 .url(url_update)
                 .put(requestBody)
@@ -352,5 +382,61 @@ public class CreateUserActivity extends AppCompatActivity {
         else{
             return true;
         }
+    }
+
+    private void llenar(){
+        if (SessionHelper.id_user > 0){
+            OkHttpClient client = new OkHttpClient();
+
+            Request request = new Request.Builder().url(url_llenar).build();
+
+            client.newCall(request).enqueue(new Callback() {
+                @Override
+                public void onFailure(Call call, IOException e) {
+                    e.printStackTrace();
+                }
+
+                @Override
+                public void onResponse(Call call, Response response) throws IOException {
+                    final String jsondata = response.body().string();
+                    if (response.isSuccessful()) {
+
+                        runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                try {
+                                    llenarcampos(jsondata);
+                                }
+                                catch (Exception e){
+                                    e.printStackTrace();
+                                }
+
+                            }
+                        });
+
+
+
+                    } else {
+                        runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                //Toast.makeText(getApplicationContext(), "User o password invalids",
+                                //Toast.LENGTH_LONG).show();
+                            }
+                        });
+
+                    }
+                /**/
+
+                }
+            });
+        }
+    }
+    private void llenarcampos (String s) throws JSONException{
+        JSONObject js = new JSONObject(s);
+        nameField.setText(js.getString("nombre"));
+        lastNameField.setText(js.getString("apellidos"));
+        emailField.setText(js.getString("email"));
+        phoneField.setText(js.getString("telefono"));
     }
 }

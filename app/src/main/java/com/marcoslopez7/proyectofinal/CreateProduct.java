@@ -21,6 +21,7 @@ import android.widget.Toast;
 
 import org.json.JSONArray;
 import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.io.File;
 import java.io.IOException;
@@ -46,6 +47,7 @@ public class CreateProduct extends AppCompatActivity {
     private static final String url = "http://159.203.166.99:8000/products/createproduct/", TAG = CreateUserActivity.class.getSimpleName();
     private static final String url2 = "http://159.203.166.99:8000/products/categorias/";
     private static final String url_put = "http://159.203.166.99:8000/products/edit/";
+    private String url_prod = "http://159.203.166.99:8000/products/";
     private int id_p;
 
     private String path = "";
@@ -61,6 +63,7 @@ public class CreateProduct extends AppCompatActivity {
         Intent esta = getIntent();
 
         if(esta.getBooleanExtra(getResources().getString(R.string.Owner), false)){
+
             b_submit.setText("Update");
             b_submit.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -69,6 +72,7 @@ public class CreateProduct extends AppCompatActivity {
                 }
             });
             id_p = esta.getIntExtra(getResources().getString(R.string.Id_producto),0);
+            llenar();
         }
         else{
             b_submit.setOnClickListener(new View.OnClickListener() {
@@ -215,7 +219,7 @@ public class CreateProduct extends AppCompatActivity {
     }
 
     private void submit() {
-        if(!validate()){
+        if(!validate() || !img_valid()){
             Toast t = Toast.makeText(getApplicationContext(), "Please fill all the camps", Toast.LENGTH_SHORT);
             t.show();
             return;
@@ -257,27 +261,41 @@ public class CreateProduct extends AppCompatActivity {
     }
 
     private void update() {
-        if(!validate()){
+        if(!validate() || !img_valid()){
             Toast t = Toast.makeText(getApplicationContext(), "Please fill all the camps", Toast.LENGTH_SHORT);
             t.show();
             return;
         }
         OkHttpClient client = new OkHttpClient();
-        RequestBody requestBody = new MultipartBody.Builder()
-                .setType(MultipartBody.FORM)
-                .addFormDataPart("nombre", name_et.getText().toString())
-                .addFormDataPart("descripcion", description_et.getText().toString())
-                .addFormDataPart("precio", price_et.getText().toString())
-                .addFormDataPart("foto", imageURL.toString(),
-                        RequestBody.create(MEDIA_TYPE_IMAGE, new File(path))
-                )
-                .addFormDataPart("ultima_modificacion", "yo")
-                .addFormDataPart("aprobado", "false")
-                .addFormDataPart("vendido", "false")
-                .addFormDataPart("usuario", ""+SessionHelper.id_user)
-                .addFormDataPart("categoria", ""+Resp)
-                .build();
-
+        RequestBody requestBody;
+        if (!path.equals("")) {
+            requestBody = new MultipartBody.Builder()
+                    .setType(MultipartBody.FORM)
+                    .addFormDataPart("nombre", name_et.getText().toString())
+                    .addFormDataPart("descripcion", description_et.getText().toString())
+                    .addFormDataPart("precio", price_et.getText().toString())
+                    .addFormDataPart("foto", imageURL.toString(),
+                            RequestBody.create(MEDIA_TYPE_IMAGE, new File(path))
+                    )
+                    .addFormDataPart("ultima_modificacion", "yo")
+                    .addFormDataPart("aprobado", "false")
+                    .addFormDataPart("vendido", "false")
+                    .addFormDataPart("usuario", "" + SessionHelper.id_user)
+                    .addFormDataPart("categoria", "" + Resp)
+                    .build();
+        } else {
+            requestBody = new MultipartBody.Builder()
+                    .setType(MultipartBody.FORM)
+                    .addFormDataPart("nombre", name_et.getText().toString())
+                    .addFormDataPart("descripcion", description_et.getText().toString())
+                    .addFormDataPart("precio", price_et.getText().toString())
+                    .addFormDataPart("ultima_modificacion", "yo")
+                    .addFormDataPart("aprobado", "false")
+                    .addFormDataPart("vendido", "false")
+                    .addFormDataPart("usuario", "" + SessionHelper.id_user)
+                    .addFormDataPart("categoria", "" + Resp)
+                    .build();
+        }
         Request request = new Request.Builder()
                 .url(url_put+id_p+"/")
                 .put(requestBody)
@@ -312,10 +330,72 @@ public class CreateProduct extends AppCompatActivity {
     }
 
     private boolean validate(){
-        if(name_et.getText().toString().equals("") || price_et.getText().toString().equals("") || description_et.getText().toString().equals("") || imageURL.toString().equals("")){
+        if(name_et.getText().toString().equals("") || price_et.getText().toString().equals("") || description_et.getText().toString().equals("")){
             return false;
         }
         else
             return true;
+    }
+    private boolean img_valid(){
+        return (imageURL != null);
+    }
+
+    private void llenar(){
+        if (SessionHelper.id_user > 0){
+            OkHttpClient client = new OkHttpClient();
+
+            Request request = new Request.Builder().url(url_prod+id_p+"/").build();
+
+            client.newCall(request).enqueue(new Callback() {
+                @Override
+                public void onFailure(Call call, IOException e) {
+                    e.printStackTrace();
+                }
+
+                @Override
+                public void onResponse(Call call, Response response) throws IOException {
+                    final String jsondata = response.body().string();
+                    if (response.isSuccessful()) {
+
+                        runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                try {
+                                    llenarcampos(jsondata);
+                                }
+                                catch (Exception e){
+                                    e.printStackTrace();
+                                }
+
+                            }
+                        });
+
+
+
+                    } else {
+                        runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                //Toast.makeText(getApplicationContext(), "User o password invalids",
+                                //Toast.LENGTH_LONG).show();
+                            }
+                        });
+
+                    }
+                /**/
+
+                }
+            });
+        }
+        else{
+            Toast.makeText(getApplicationContext(), "No ha iniciado session",
+            Toast.LENGTH_LONG).show();
+        }
+    }
+    private void llenarcampos (String s) throws JSONException{
+        JSONObject js = new JSONObject(s);
+        name_et.setText(js.getString("nombre"));
+        description_et.setText(js.getString("descripcion"));
+        price_et.setText(js.getString("precio"));
     }
 }
