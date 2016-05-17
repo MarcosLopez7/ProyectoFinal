@@ -206,7 +206,7 @@ public class CreateProduct extends AppCompatActivity {
 
     private String getRealImagePath(Uri content) {
         String[] data = {MediaStore.Images.Media.DATA};
-        Cursor cursor = managedQuery(content, data, null, null, null);
+        Cursor cursor = getContentResolver().query(content, data, null, null, null);
         if (cursor == null)
             return null;
         int column_index = cursor.getColumnIndexOrThrow(MediaStore.Images.Media.DATA);
